@@ -21,15 +21,18 @@ Below is a list of the full feature-set for the first version of the bot, this l
 
 Suggestions for changes/additions to this list are welcome!
 
-## Installation ⬇️
+## Installation and usage ⬇️
 
-The code can be installed simply by cloning the repo, but make sure you have googles Roboto font installed as this is the font used for some of the text generated.
+1. Clone the repo `git clone https://github.com/OliverTansley/PremBot`
+2. Ensure that you have pipenv installed on your machine `pip3 install pipenv`
+3. Use `pipenv install` to install all the dependencies to a virtual environment
+4. To run the bot `pipenv run python3 .` in the same directory as the `__main__.py` file
 
 ## Contributing 👨‍💻 👩‍💻
 
 ### Contributing Code
 
-1. Clone the repo `git clone https://github.com/OliverTansley/PremBot`
+1. Follow the instruction above for how to install the codebase
 2. Create a new branch for the intended feature `git branch feature-name`
 3. Open a new pull request and wait for reviews and comments
 
