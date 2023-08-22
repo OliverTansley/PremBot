@@ -6,7 +6,7 @@ import requests
 from PIL import Image, ImageFont, ImageDraw
 
 
-class FplCog(commands.Cog):
+class PlayerComparison(commands.Cog):
 
     BASE_URL: str = 'https://fantasy.premierleague.com/api/'
     PLAYER_ICON_URL: str = 'https://resources.premierleague.com/premierleague/photos/players/110x140/p'

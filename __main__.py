@@ -4,11 +4,10 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import logging
 
-from Cogs.BasicCog import BasicCog
-from Cogs.FplCog import FplCog
-from Cogs.ReminderCog import ReminderCog
+from Cogs.PlayerInfo import PlayerComparison
 
 load_dotenv()
+
 TOKEN: str = str(os.getenv('DISCORD_TOKEN'))
 
 intents: discord.Intents = discord.Intents.default()
@@ -20,15 +19,13 @@ logger: logging.Logger = logging.getLogger('discord')
 
 
 @client.event
-async def on_ready():
+async def on_ready() -> None:
     '''
     Manually add cogs below
     '''
     logger.info(f'Reloading Cogs')
     try:
-        await client.add_cog(BasicCog(client))
-        await client.add_cog(ReminderCog(client))
-        await client.add_cog(FplCog(client))
+        await client.add_cog(PlayerComparison(client))
     except discord.errors.ClientException:
         logger.info(f'Error Loading Cogs')
         exit()
