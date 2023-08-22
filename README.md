@@ -1,4 +1,4 @@
-# PremBot
+# PremBot 🤖 ⚽️
 
 An open source project to create a discord bot, which can provide comprehensive and live premier league data in a visual professional format.
 
@@ -18,6 +18,8 @@ Below is a list of the full feature-set for the first version of the bot, this l
 - [x] compare [player1] [player2] : compares some statistics between the two players listed
 - [ ] topscorers [n | None] : provides the n highest scorers in the league during the current season (default is 5)
 - [ ] topassisters [n | None] : provides the n highest assisters in the league during the current season (default is 5)
+
+Suggestions for changes/additions to this list are welcome!
 
 ## Installation
 
