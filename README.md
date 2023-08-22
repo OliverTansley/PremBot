@@ -23,6 +23,16 @@ Suggestions for changes/additions to this list are welcome!
 
 ## Installation ⬇️
 
+The code can be installed simply by cloning the repo, but make sure you have googles Roboto font installed as this is the font used for some of the text generated.
+
 ## Contributing 👨‍💻 👩‍💻
 
-## License 🪪
+### Contributing Code
+
+1. Clone the repo `git clone https://github.com/OliverTansley/PremBot`
+2. Create a new branch for the intended feature `git branch feature-name`
+3. Open a new pull request and wait for reviews and comments
+
+### Contributing ideas
+
+New ideas for features can be submitted by raising new issues for 'enhancement's
