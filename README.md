@@ -32,9 +32,8 @@ Suggestions for changes/additions to this list are welcome!
 
 ### Contributing Code
 
-1. Follow the instructions above for how to install the codebase
-2. Create a new branch for the intended feature `git branch feature-name`
-3. Open a new pull request and wait for reviews and comments
+1. Create a fork the repository
+2. Open a new pull request and wait for reviews and comments
 
 ### Contributing ideas
 
