@@ -19,10 +19,10 @@ class PlayerComparison(commands.Cog):
         '''
         display basic image of player and their goals this season
         '''
-        r = requests.get(FplCog.BASE_URL+'bootstrap-static/').json()
+        r = requests.get(PlayerComparison.BASE_URL+'bootstrap-static/').json()
         for player in r["elements"]:
             if player["web_name"].lower() == args[0].lower():
-                await ctx.send(FplCog.PLAYER_ICON_URL + str(player['photo'])[0:len(str(player['photo']))-3] + "png")
+                await ctx.send(PlayerComparison.PLAYER_ICON_URL + str(player['photo'])[0:len(str(player['photo']))-3] + "png")
                 await ctx.send(f'goals scored this season: {player["goals_scored"]}')
 
     @commands.command()
@@ -56,7 +56,8 @@ class PlayerComparison(commands.Cog):
         '''
         returns the player json of a player with the name 'player_name'
         '''
-        fpl_request = requests.get(FplCog.BASE_URL+'bootstrap-static/').json()
+        fpl_request = requests.get(
+            PlayerComparison.BASE_URL+'bootstrap-static/').json()
         for player in fpl_request["elements"]:
             if player["web_name"].lower() == player_name.lower():
                 return player
@@ -65,7 +66,7 @@ class PlayerComparison(commands.Cog):
         '''
         return a players thumbnail image as a PIL Image
         '''
-        return Image.open(io.BytesIO(requests.get(FplCog.PLAYER_ICON_URL + str(player['photo'])[0:len(str(player['photo']))-3] + "png").content))
+        return Image.open(io.BytesIO(requests.get(PlayerComparison.PLAYER_ICON_URL + str(player['photo'])[0:len(str(player['photo']))-3] + "png").content))
 
     def paste_statistic(self, compare_thumbnail: Image.Image, statistic: str, level: int, player1, player2) -> None:
         '''
