@@ -4,7 +4,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 import logging
 
-from Cogs.PlayerInfo import PlayerComparison
+from Cogs.PlayerComparison import PlayerComparison
 
 load_dotenv()
 
