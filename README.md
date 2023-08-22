@@ -12,7 +12,7 @@ Create a library for easily accessing the data which is available at the fpl api
 
 Below is a list of the full feature-set for the first version of the bot, this list may be amended based on restrictions of the data within the fpl api.
 
--[] test
+- [ ] test
 
 ## Installation
 
