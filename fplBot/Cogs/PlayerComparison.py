@@ -2,7 +2,7 @@ from typing import Any
 from discord.ext import commands
 import discord
 import io
-import FplData
+import fplBot.Utils.FplData as FplData
 from PIL import Image, ImageFont, ImageDraw
 
 
