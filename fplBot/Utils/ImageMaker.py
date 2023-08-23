@@ -19,12 +19,12 @@ def draw_square(orig_img: Image.Image, grid_pos: Tuple[int, int, int, int], colo
     '''
     orig_img_draw: ImageDraw.ImageDraw = ImageDraw.Draw(orig_img)
     square_coords: Tuple[int, int, int, int] = _grid_pos_2_img_coords(grid_pos)
-    orig_img_draw.rectangle(
+    orig_img_draw.rounded_rectangle(
         (square_coords[0]+_padding,
          square_coords[1]+_padding,
          square_coords[0]+square_coords[2]-_padding,
          square_coords[1]+square_coords[3]-_padding),
-        colour)
+        radius=10, fill=colour)
 
 
 def _grid_pos_2_img_coords(orig_tuple) -> Tuple[int, ...]:
