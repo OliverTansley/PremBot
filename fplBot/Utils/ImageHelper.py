@@ -74,7 +74,7 @@ def draw_square(orig_img: Image.Image, grid_start: Tuple[int, int], grid_end: Tu
         radius=10, fill=colour)
 
 
-def add_text(orig_img: Image.Image, grid_loc: Tuple[int, int], text: str, level: TextLevel = TextLevel.MIDDLE) -> None:
+def add_text(orig_img: Image.Image, grid_loc: Tuple[int, int], text: str, level: TextLevel = TextLevel.MIDDLE, hightlight_color: Tuple[int, int, int] = (-1, -1, -1), text_color: Tuple[int, int, int] = WHITE) -> None:
     '''
     writes text to a specified grid at a height specified by the level arg
     '''
@@ -83,7 +83,15 @@ def add_text(orig_img: Image.Image, grid_loc: Tuple[int, int], text: str, level:
     text_coord: Tuple[int, int] = _grid_pos_2_img_coords(grid_loc)
     text_coord = (text_coord[0]+2*_padding,
                   text_coord[1] + int(level)-_padding)
-    orig_img_draw.text(text_coord, text, font=font)
+    if hightlight_color != (-1, -1, -1):
+        orig_img_draw.rounded_rectangle(
+            (text_coord[0]-_padding/2,
+             text_coord[1]-_padding/2,
+             text_coord[0]+font.getlength(text)+_padding/2,
+             text_coord[1]+30+_padding/2),
+            radius=4, fill=hightlight_color)
+    orig_img_draw.text(text_coord, text, font=font,
+                       fill=text_color)
 
 
 def image_2_discord_file(img: Image.Image) -> discord.File:
@@ -102,6 +110,7 @@ if __name__ == "__main__":
     img = create_image((5, 1))
     draw_square(img, (0, 0), (2, 1), RED)
     add_text(img, (0, 0), "Test text here", level=TextLevel.TOP)
-    add_text(img, (0, 0), "Test text here", level=TextLevel.MIDDLE)
+    add_text(img, (0, 0), "Test text here",
+             level=TextLevel.MIDDLE, hightlight_color=BLUE, text_color=BLACK)
     add_text(img, (0, 0), "Test text here", level=TextLevel.BOTTOM)
     img.show()
