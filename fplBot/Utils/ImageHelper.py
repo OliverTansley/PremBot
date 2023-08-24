@@ -50,13 +50,13 @@ class TextLevel(IntEnum):
     BOTTOM = _square_unit_size - 38
 
 
-def create_image(dimensions: Tuple[int, int]) -> Image.Image:
+def create_image(dimensions: Tuple[int, int], background: Tuple[int, int, int] = WHITE) -> Image.Image:
     '''
     returns image of size specified by standard units (_square_unit_size)
     '''
     new_img: Image.Image = Image.new(
         'RGBA', _grid_pos_2_img_coords(dimensions))
-    new_img.paste(WHITE, (0, 0, new_img.size[0], new_img.size[1]))
+    new_img.paste(background, (0, 0, new_img.size[0], new_img.size[1]))
     return new_img
 
 
@@ -123,12 +123,10 @@ def _grid_pos_2_img_coords(orig_tuple) -> Tuple[int, ...]:
 
 if __name__ == "__main__":
     img = create_image((5, 1))
-    img2 = Image.open("./test.png")
     draw_square(img, (0, 0), (2, 1), RED)
     add_text(img, (0, 0), "Test text here", level=TextLevel.TOP)
     add_text(img, (0, 0), "Test text here",
              level=TextLevel.MIDDLE, hightlight_color=BLUE, text_color=BLACK)
     add_text(img, (0, 0), "Test text here", level=TextLevel.BOTTOM)
     draw_square(img, (1, 0), (2, 1), BLUE)
-    add_image(img, img2, (4, 0), (5, 1))
     img.show()
