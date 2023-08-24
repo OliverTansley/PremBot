@@ -1,5 +1,6 @@
 from enum import IntEnum
 from io import BytesIO
+import math
 from typing import Text, Tuple
 from PIL import Image, ImageDraw, ImageFont
 import discord
@@ -94,12 +95,26 @@ def add_text(orig_img: Image.Image, grid_loc: Tuple[int, int], text: str, level:
                        fill=text_color)
 
 
+def add_image(orig_img: Image.Image, new_image: Image.Image, grid_start: Tuple[int, int], grid_end: Tuple[int, int]) -> None:
+    img_start: Tuple[int, int] = _grid_pos_2_img_coords(grid_start)
+    img_end: Tuple[int, int] = _grid_pos_2_img_coords(grid_end)
+    center_position: tuple[float, float] = ((img_start[0] + img_end[0]) /
+                                            2, (img_start[1]+img_end[1])/2)
+    top_left_corner: tuple[int, int] = (
+        int(center_position[0]-new_image.size[0]/2),
+        int(center_position[1]-new_image.size[1]/2))
+    orig_img.paste(new_image, top_left_corner)
+
+
 def image_2_discord_file(img: Image.Image) -> discord.File:
+    '''
+    returns the Image.Image variable as a discord file ready to be sent using ctx.send
+    '''
     img_bytesio = BytesIO()
     img.save(img_bytesio)
     # seek back to the beginning of the bytes else not all of the image file will be stored in the discord.File object
     img_bytesio.seek(0)
-    return discord.File(img_bytesio)
+    return discord.File(img_bytesio, filename="discordfile_from_image.png")
 
 
 def _grid_pos_2_img_coords(orig_tuple) -> Tuple[int, ...]:
@@ -108,9 +123,12 @@ def _grid_pos_2_img_coords(orig_tuple) -> Tuple[int, ...]:
 
 if __name__ == "__main__":
     img = create_image((5, 1))
+    img2 = Image.open("./test.png")
     draw_square(img, (0, 0), (2, 1), RED)
     add_text(img, (0, 0), "Test text here", level=TextLevel.TOP)
     add_text(img, (0, 0), "Test text here",
              level=TextLevel.MIDDLE, hightlight_color=BLUE, text_color=BLACK)
     add_text(img, (0, 0), "Test text here", level=TextLevel.BOTTOM)
+    draw_square(img, (1, 0), (2, 1), BLUE)
+    add_image(img, img2, (4, 0), (5, 1))
     img.show()
