@@ -1,15 +1,15 @@
-from enum import Enum
+from enum import IntEnum
 from io import BytesIO
-from typing import Tuple
-from PIL import Image, ImageDraw
+from typing import Text, Tuple
+from PIL import Image, ImageDraw, ImageFont
 import discord
 
 
-_outer_square_unit_size: int = 80
+_square_unit_size: int = 120
 _padding: int = 4
 
 # Neutrals
-SOFT_WHITE: Tuple[int, int, int] = (245, 245, 245)
+WHITE: Tuple[int, int, int] = (245, 245, 245)
 LIGHT_GRAY: Tuple[int, int, int] = (200, 200, 200)
 MID_GRAY: Tuple[int, int, int] = (150, 150, 150)
 DARK_GRAY: Tuple[int, int, int] = (100, 100, 100)
@@ -35,7 +35,7 @@ LIGHT_GREEN: Tuple[int, int, int] = (144, 238, 144)
 LIGHT_PURPLE: Tuple[int, int, int] = (216, 191, 216)
 
 # Background Colors
-BACKGROUND_LIGHT: Tuple[int, int, int] = SOFT_WHITE
+BACKGROUND_LIGHT: Tuple[int, int, int] = WHITE
 BACKGROUND_DARK: Tuple[int, int, int] = MID_GRAY
 
 # Text Colors
@@ -43,31 +43,47 @@ TEXT_LIGHT: Tuple[int, int, int] = DARK_GRAY
 TEXT_DARK: Tuple[int, int, int] = BLACK
 
 
-class TextLevel(Enum):
-    TOP = 0
-    MIDDLE = 10
-    BOTTOM = 100
+class TextLevel(IntEnum):
+    TOP = 2*_padding + 4
+    MIDDLE = _square_unit_size/2 - 12
+    BOTTOM = _square_unit_size - 38
 
 
 def create_image(dimensions: Tuple[int, int]) -> Image.Image:
     '''
-    returns image of size specified by standard units (_outer_square_unit_size)
+    returns image of size specified by standard units (_square_unit_size)
     '''
-    return Image.new('RGBA', _grid_pos_2_img_coords(dimensions))
+    new_img: Image.Image = Image.new(
+        'RGBA', _grid_pos_2_img_coords(dimensions))
+    new_img.paste(WHITE, (0, 0, new_img.size[0], new_img.size[1]))
+    return new_img
 
 
-def draw_square(orig_img: Image.Image, grid_pos: Tuple[int, int, int, int], colour: Tuple[int, int, int]) -> None:
+def draw_square(orig_img: Image.Image, grid_start: Tuple[int, int], grid_end: Tuple[int, int], colour: Tuple[int, int, int]) -> None:
     '''
     place a square in the region specified by the four gird positions given
     '''
     orig_img_draw: ImageDraw.ImageDraw = ImageDraw.Draw(orig_img)
-    square_coords: Tuple[int, int, int, int] = _grid_pos_2_img_coords(grid_pos)
+    square_start: Tuple[int, int] = _grid_pos_2_img_coords(grid_start)
+    square_end: Tuple[int, int] = _grid_pos_2_img_coords(grid_end)
     orig_img_draw.rounded_rectangle(
-        (square_coords[0]+_padding,
-         square_coords[1]+_padding,
-         square_coords[0]+square_coords[2]-_padding,
-         square_coords[1]+square_coords[3]-_padding),
-        radius=20, fill=colour)
+        (square_start[0]+_padding,
+         square_start[1]+_padding,
+         square_start[0]+square_end[0]-_padding,
+         square_start[1]+square_end[1]-_padding),
+        radius=10, fill=colour)
+
+
+def add_text(orig_img: Image.Image, grid_loc: Tuple[int, int], text: str, level: TextLevel = TextLevel.MIDDLE) -> None:
+    '''
+    writes text to a specified grid at a height specified by the level arg
+    '''
+    font = ImageFont.truetype("Roboto-Black.ttf", 30)
+    orig_img_draw: ImageDraw.ImageDraw = ImageDraw.Draw(orig_img)
+    text_coord: Tuple[int, int] = _grid_pos_2_img_coords(grid_loc)
+    text_coord = (text_coord[0]+2*_padding,
+                  text_coord[1] + int(level)-_padding)
+    orig_img_draw.text(text_coord, text, font=font)
 
 
 def image_2_discord_file(img: Image.Image) -> discord.File:
@@ -79,11 +95,13 @@ def image_2_discord_file(img: Image.Image) -> discord.File:
 
 
 def _grid_pos_2_img_coords(orig_tuple) -> Tuple[int, ...]:
-    return tuple(element * _outer_square_unit_size for element in orig_tuple)
+    return tuple(element * _square_unit_size for element in orig_tuple)
 
 
 if __name__ == "__main__":
-    img = create_image((3, 2))
-    draw_square(img, (0, 0, 1, 1), colour=BLUE)
-    draw_square(img, (1, 0, 2, 2), PURPLE)
+    img = create_image((5, 1))
+    draw_square(img, (0, 0), (2, 1), RED)
+    add_text(img, (0, 0), "Test text here", level=TextLevel.TOP)
+    add_text(img, (0, 0), "Test text here", level=TextLevel.MIDDLE)
+    add_text(img, (0, 0), "Test text here", level=TextLevel.BOTTOM)
     img.show()
