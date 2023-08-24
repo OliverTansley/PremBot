@@ -26,7 +26,8 @@ Suggestions for changes/additions to this list are welcome!
 1. Clone the repo `git clone https://github.com/OliverTansley/PremBot`
 2. Ensure that you have pipenv installed on your machine `pip3 install pipenv`
 3. Use `pipenv install` to install all the dependencies to a virtual environment
-4. To run the bot `pipenv run python3 .` in the same directory as the `__main__.py` file
+4. Create a .env file which will contain the your personal discord bot token (do not add this into any code you write)
+5. To run the bot `pipenv run python3 .` in the same directory as the `__main__.py` file
 
 ## Contributing 👨‍💻 👩‍💻
 
